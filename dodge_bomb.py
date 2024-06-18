@@ -29,6 +29,7 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
 
 
 def tra_img() -> dict:
+    # 辞書きれいって言われた～！...ほんとか？
     KK_DICT = {
         (0, 0): pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0),
         (-5, 0): pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0),
