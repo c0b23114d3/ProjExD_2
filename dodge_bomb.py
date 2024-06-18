@@ -43,6 +43,13 @@ def tra_img() -> dict:
     return KK_DICT
 
 
+def min(tmr, max):
+    if tmr < max:
+        return tmr
+    else:
+        return max
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -52,19 +59,20 @@ def main():
     kk_rct.center = 900, 400
     bomb = pg.Surface((20, 20))
     pg.draw.circle(bomb, (255, 0, 0), (10, 10), 10)
-    bomb.set_colorkey((0, 0, 0))
+    bomb.set_colorkey((0, 0, 0)) 
     bomb_rct = bomb.get_rect()
     bomb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     vx, vy = +5, +5
     img_dict = tra_img()
+    accs = [a for a in range(1, 11)]
     clock = pg.time.Clock()
     tmr = 0
     while True:
         for event in pg.event.get():
             if event.type == pg.QUIT: 
                 return
-        if kk_rct.colliderect(bomb_rct):  # 衝突判定
-            return
+        # if kk_rct.colliderect(bomb_rct):  # 衝突判定
+        #     return
         screen.blit(bg_img, [0, 0]) 
 
         key_lst = pg.key.get_pressed()
@@ -79,7 +87,7 @@ def main():
         sum_mv = tuple(sum_mv)
         kk_img = img_dict[sum_mv]
         screen.blit(kk_img, kk_rct)
-        bomb_rct.move_ip(vx, vy)
+        bomb_rct.move_ip(vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)])
         yoko, tate = check_bound(bomb_rct)
         if not yoko:
             vx *= -1
