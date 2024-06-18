@@ -57,10 +57,13 @@ def main():
     kk_img = pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0)
     kk_rct = kk_img.get_rect()
     kk_rct.center = 900, 400
-    bomb = pg.Surface((20, 20))
-    pg.draw.circle(bomb, (255, 0, 0), (10, 10), 10)
-    bomb.set_colorkey((0, 0, 0)) 
-    bomb_rct = bomb.get_rect()
+    bomb_lst = []
+    for r in range(1,11):
+        bomb = pg.Surface((20*r, 20*r))
+        pg.draw.circle(bomb, (255, 0, 0), (10*r, 10*r), 10*r)
+        bomb.set_colorkey((0, 0, 0)) 
+        bomb_lst.append(bomb)
+    bomb_rct = bomb_lst[0].get_rect()
     bomb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     vx, vy = +5, +5
     img_dict = tra_img()
@@ -87,6 +90,7 @@ def main():
         sum_mv = tuple(sum_mv)
         kk_img = img_dict[sum_mv]
         screen.blit(kk_img, kk_rct)
+        bomb = bomb_lst[min(tmr//500, 9)]
         bomb_rct.move_ip(vx*accs[min(tmr//500, 9)], vy*accs[min(tmr//500, 9)])
         yoko, tate = check_bound(bomb_rct)
         if not yoko:
