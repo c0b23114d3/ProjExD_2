@@ -28,6 +28,21 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     return yoko, tate
 
 
+def tra_img() -> dict:
+    KK_DICT = {
+        (0, 0): pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0),
+        (-5, 0): pg.transform.rotozoom(pg.image.load("fig/3.png"), 0, 2.0),
+        (-5, -5): pg.transform.rotozoom(pg.image.load("fig/3.png"), 315, 2.0),
+        (0, -5): pg.transform.flip(pg.transform.rotozoom(pg.image.load("fig/3.png"), 270, 2.0), True, False),
+        (+5, -5): pg.transform.flip(pg.transform.rotozoom(pg.image.load("fig/3.png"), 315, 2.0), True, False),
+        (+5, 0): pg.transform.flip(pg.transform.rotozoom(pg.image.load("fig/3.png"), 180, 2.0), False, True),
+        (+5, +5): pg.transform.flip(pg.transform.rotozoom(pg.image.load("fig/3.png"), 225, 2.0), False, True),
+        (0, +5): pg.transform.flip(pg.transform.rotozoom(pg.image.load("fig/3.png"), 90, 2.0), True, False),
+        (-5, +5): pg.transform.rotozoom(pg.image.load("fig/3.png"), 45, 2.0),
+    }
+    return KK_DICT
+
+
 def main():
     pg.display.set_caption("逃げろ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))
@@ -41,6 +56,7 @@ def main():
     bomb_rct = bomb.get_rect()
     bomb_rct.center = random.randint(0, WIDTH), random.randint(0, HEIGHT)
     vx, vy = +5, +5
+    img_dict = tra_img()
     clock = pg.time.Clock()
     tmr = 0
     while True:
@@ -60,6 +76,8 @@ def main():
         kk_rct.move_ip(sum_mv)
         if check_bound(kk_rct) != (True, True):
             kk_rct.move_ip(-sum_mv[0], -sum_mv[1])
+        sum_mv = tuple(sum_mv)
+        kk_img = img_dict[sum_mv]
         screen.blit(kk_img, kk_rct)
         bomb_rct.move_ip(vx, vy)
         yoko, tate = check_bound(bomb_rct)
